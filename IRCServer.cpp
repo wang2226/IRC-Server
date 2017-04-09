@@ -437,7 +437,20 @@ IRCServer::getAllUsers(int fd, const char * user, const char * password,const  c
 void
 IRCServer::createRoom(int fd, const char * user, const char * password,const  char * args)
 {
-
+	if(checkPassword(fd, user, password)){
+		vector<string>::iterator it;
+		for(it = chatRoom.begin(); it != chatRoom.end(); it++){
+			if(*it == args){
+				return;
+			}
+		}
+		chatRoom.push_back(args);
+		msg = "OK\r\n";
+		write(fd, msg, strlen(msg));
+	} else {
+		msg = "DENIED\r\n";
+		write(fd, msg, strlen(msg));
+	}
 }
 
 void
