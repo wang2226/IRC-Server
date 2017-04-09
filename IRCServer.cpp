@@ -283,7 +283,13 @@ IRCServer::initialize()
 bool
 IRCServer::checkPassword(int fd, const char * user, const char * password) {
 	// Here check the password
-	return true;
+	bool match;
+	string str (password);
+	if(!allUsers[user].compare(str))
+		match = true;
+	else
+		match = false
+	return match;
 }
 
 void
