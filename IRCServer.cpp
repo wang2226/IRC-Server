@@ -384,7 +384,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		int size = vec.size();
 		
 		for(int i = 0; i < size; i++){
-			string str = string("MSGNUM") + itoa(i+1) + string(" ") + vec[i];
+			string str = string("MSGNUM") + std::to_string(i+1) + string(" ") + vec[i];
 			msg =  str.c_str();
 			write(fd, msg, strlen(msg));
 		}	
