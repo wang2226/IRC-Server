@@ -312,9 +312,16 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 {
 	const char * msg;
 	if(checkPassword(fd, user, password) && userInRoom.find(user) == userInRoom.end()){
-		vector<string>::iterator it = find(chatRoom.begin(), chatRoom.end(), args);
-        	if(it == chatRoom.end())
-				createRoom(fd, user, password, args);
+		vector<string>::iterator it;
+		int flag = 0;
+		for(it = userInRoom.begin(); it < userInRoom.end(); it++){
+			if(*it == args){
+				flag = 1;
+				break;
+			}
+		}
+        if(flag != 1)
+			createRoom(fd, user, password, args);
 		userInRoom.insert(pair<string,string>(user, args));
 		msg =  "OK\r\n";
 	} else {
