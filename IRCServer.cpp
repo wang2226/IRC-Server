@@ -402,6 +402,7 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 
 	if(checkPassword(fd, user, password) && userInRoom.find(user) != userInRoom.end()){
 		map<string,string>::iterator it;
+		const char * msg;
 		for(it = userInRoom.begin(); it != userInRoom.end(); it++){
 			if(!(it->second.compare(args))){
 				string str = it->first + "\r\n";	
