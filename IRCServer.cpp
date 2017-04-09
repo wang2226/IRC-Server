@@ -314,7 +314,7 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 	if(checkPassword(fd, user, password) && userInRoom.find(user) == userInRoom.end()){
 		vector<string>::iterator it;
 		int flag = 0;
-		for(it = userInRoom.begin(); it < userInRoom.end(); it++){
+		for(it = chatRoom.begin(); it < chatRoom.end(); it++){
 			if(*it == args){
 				flag = 1;
 				break;
