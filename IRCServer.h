@@ -10,9 +10,10 @@
 
 #define PASSWORD_FILE "password.txt"
 
+using namespace std;
 class IRCServer {
 	// Add any variables you need
-	list <string> chatRoom;
+	list<string> chatRoom;
 	map<string,string> allUsers;
 	map<string,string> userInRoom;
 	map<string, vector<string> > msgInRoom; 
