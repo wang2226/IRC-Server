@@ -399,11 +399,21 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 void
 IRCServer::getUsersInRoom(int fd, const char * user, const char * password, const char * args)
 {
-	map<string,string>::iterator it;
-	for(it = userInRoom.begin(); it != userInRoom.end(); it++){
-		if(it->second.compare(args))
-			return;	
+
+	if(checkPassword(fd, user, password) && userInRoom.find(user) != userInRoom.end()){
+		map<string,string>::iterator it;
+		for(it = userInRoom.begin(); it != userInRoom.end(); it++){
+			if(!(it->second.compare(args))){
+				string str = it->first + "\r\n";	
+				msg = str.c_str();
+				write(fd, msg, strlen(msg));
+			}
+		}
+	} else {
+		msg = "DENIED\r\n";
+		write(fd, msg, strlen(msg));
 	}
+	return;
 }
 
 void
