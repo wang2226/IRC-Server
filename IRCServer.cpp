@@ -334,6 +334,15 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 void
 IRCServer::leaveRoom(int fd, const char * user, const char * password, const char * args)
 {
+	const char * msg;	
+	if(checkPassword(fd, user, password) && userInRoom.find(user) != userInRoom.end()){
+		userInRoom.erase(user);
+		msg =  "OK\r\n";
+	} else {
+		msg =  "DENIED\r\n";
+	}
+	write(fd, msg, strlen(msg));
+	return
 }
 
 void
