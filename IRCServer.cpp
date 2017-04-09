@@ -351,17 +351,19 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	const char * msg;	
 	if(checkPassword(fd, user, password) && userInRoom.find(user) != userInRoom.end()){
 		string room = userInRoom[user];
-		vector <string> vec = msgInRoom[room];
+		vector <string> vec ;
+		if(msgInRoom.find(room) == msgInRoom.end()){
+			msgInRoom.insert(pair <string,vector <string> > (room, vec));
+		}else{
+			vec = msgInRoom[room];
+		}
+
 		int size = vec.size();
 
 		if(size >= 100)
 			vec.erase(vec.begin());
 
 		string str = string(user) + " " + string(args) + "\r\n";
-
-		if(vec.empty()){
-			msgInRoom.insert(pair <string,vector <string> > (room, vec));
-		} 
 
 		vec.push_back(str);
 		msg =  "OK\r\n";
@@ -375,6 +377,20 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 void
 IRCServer::getMessages(int fd, const char * user, const char * password, const char * args)
 {
+	const char * msg;	
+	if(checkPassword(fd, user, password) && userInRoom.find(user) != userInRoom.end()){
+		string room = userInRoom[user];
+		vector <string> vec = msgInRoom[room];
+		int size = vec.size();
+
+		string str = string(user) + " " + string(args) + "\r\n";
+
+		msg =  "OK\r\n";
+	} else {
+		msg =  "DENIED\r\n";
+	}
+	write(fd, msg, strlen(msg));
+	return;
 }
 
 void
