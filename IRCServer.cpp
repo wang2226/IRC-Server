@@ -208,16 +208,17 @@ IRCServer::processRequest( int fd )
         commandLine[ commandLineLength ] = 0;
 
 	printf("RECEIVED: %s\n", commandLine);
-
+/*
 	printf("The commandLine has the following format:\n");
 	printf("COMMAND <user> <password> <arguments>. See below.\n");
 	printf("You need to separate the commandLine into those components\n");
 	printf("For now, command, user, and password are hardwired.\n");
-
-	const char * command = "ADD-USER";
-	const char * user = "peter";
-	const char * password = "spider";
-	const char * args = "";
+*/
+	const char * s = " ";
+	const char * command = strtok(commandLine, s);
+	const char * user = strtok(NULL, s);
+	const char * password = strtok(NULL, s);
+	const char * args = strtok(NULL, s);
 
 	printf("command=%s\n", command);
 	printf("user=%s\n", user);
@@ -229,6 +230,12 @@ IRCServer::processRequest( int fd )
 	}
 	else if (!strcmp(command, "ENTER-ROOM")) {
 		enterRoom(fd, user, password, args);
+	}
+	else if (!strcmp(command, "CREATE-ROOM")) {
+		createRoom(fd, user, password, args);
+	}
+	else if (!strcmp(command, "LIST-ROOM")) {
+		listRooms(fd, user, password, args);
 	}
 	else if (!strcmp(command, "LEAVE-ROOM")) {
 		leaveRoom(fd, user, password, args);
@@ -312,6 +319,18 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 
 void
 IRCServer::getAllUsers(int fd, const char * user, const char * password,const  char * args)
+{
+
+}
+
+void
+IRCServer::createRoom(int fd, const char * user, const char * password,const  char * args)
+{
+
+}
+
+void
+IRCServer::listRooms(int fd, const char * user, const char * password,const  char * args)
 {
 
 }

@@ -1,3 +1,9 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <list>
+#include <string>
+#include <fstream>
 
 #ifndef IRC_SERVER
 #define IRC_SERVER
@@ -6,6 +12,10 @@
 
 class IRCServer {
 	// Add any variables you need
+	list <string> chatRoom;
+	map<string,string> allUsers;
+	map<string,string> userInRoom;
+	map<string, vector<string> > msgInRoom; 
 
 private:
 	int open_server_socket(int port);
@@ -15,6 +25,8 @@ public:
 	bool checkPassword(int fd, const char * user, const char * password);
 	void processRequest( int socket );
 	void addUser(int fd, const char * user, const char * password, const char * args);
+	void createRoom(int fd, const char * user, const char * password, const char * args);
+	void listRooms(int fd, const char * user, const char * password, const char * args);
 	void enterRoom(int fd, const char * user, const char * password, const char * args);
 	void leaveRoom(int fd, const char * user, const char * password, const char * args);
 	void sendMessage(int fd, const char * user, const char * password, const char * args);
