@@ -419,7 +419,17 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 void
 IRCServer::getAllUsers(int fd, const char * user, const char * password,const  char * args)
 {
-
+	map<string,string>::iterator it;
+	const char * msg;
+	for(it = allUsers.begin(); it != allUsers.end(); it++){
+		string str = it->first + "\r\n";
+		msg = str.c_str();
+		write(fd, msg, strlen(msg));
+	} else {
+		msg = "DENIED\r\n";
+		write(fd, msg, strlen(msg));
+	}
+	return;
 }
 
 void
