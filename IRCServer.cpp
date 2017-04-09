@@ -268,11 +268,16 @@ void
 IRCServer::initialize()
 {
 	// Open password file
+	ifstream is;
+	is.open("PASSWORD_FILE");
 
 	// Initialize users in room
-
+	string user,password;
+	while(is && getline(is,user) && getline(is,password)){
+		allUsers.insert(pair<string, string>(user, password));	
+	}
 	// Initalize message list
-
+	is.close();
 }
 
 bool
