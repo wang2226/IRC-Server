@@ -382,14 +382,17 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		string room = userInRoom[user];
 		vector <string> vec = msgInRoom[room];
 		int size = vec.size();
+		
+		for(int i = 0; i < size; i++){
+			string str = "MSGNUM" + to_string(i+1) + " " + vec[i];
+			msg =  str.c_str();
+			write(fd, msg, strlen(msg));
+		}	
 
-		string str = string(user) + " " + string(args) + "\r\n";
-
-		msg =  "OK\r\n";
 	} else {
 		msg =  "DENIED\r\n";
+		write(fd, msg, strlen(msg));
 	}
-	write(fd, msg, strlen(msg));
 	return;
 }
 
