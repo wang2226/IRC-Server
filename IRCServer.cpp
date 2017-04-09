@@ -421,10 +421,12 @@ IRCServer::getAllUsers(int fd, const char * user, const char * password,const  c
 {
 	map<string,string>::iterator it;
 	const char * msg;
-	for(it = allUsers.begin(); it != allUsers.end(); it++){
-		string str = it->first + "\r\n";
-		msg = str.c_str();
-		write(fd, msg, strlen(msg));
+	if(checkPassword(fd, user, password)){
+		for(it = allUsers.begin(); it != allUsers.end(); it++){
+			string str = it->first + "\r\n";
+			msg = str.c_str();
+			write(fd, msg, strlen(msg));
+		} 
 	} else {
 		msg = "DENIED\r\n";
 		write(fd, msg, strlen(msg));
