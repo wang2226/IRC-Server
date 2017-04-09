@@ -400,7 +400,7 @@ void
 IRCServer::getUsersInRoom(int fd, const char * user, const char * password, const char * args)
 {
 	map<string,string>::iterator it;
-	for(it = userInRoom.begin(); it < userInRoom.end(); it++){
+	for(it = userInRoom.begin(); it != userInRoom.end(); it++){
 		if(it->second.compare(args))
 			return;	
 	}
