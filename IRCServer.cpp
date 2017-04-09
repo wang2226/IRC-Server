@@ -296,11 +296,12 @@ void
 IRCServer::addUser(int fd, const char * user, const char * password, const char * args)
 {
 	// Here add a new user. For now always return OK.
+	const char * msg;
 	if(allUsers.find(user) == allUsers.end()){
 		allUsers.insert(pair<string,string>(user,password));
-		const char * msg =  "OK\r\n";
+		msg =  "OK\r\n";
 	} else {
-		const char * msg =  "DENIED\r\n";
+		msg =  "DENIED\r\n";
 	}
 	write(fd, msg, strlen(msg));
 	return;		
