@@ -310,6 +310,18 @@ IRCServer::addUser(int fd, const char * user, const char * password, const char 
 void
 IRCServer::enterRoom(int fd, const char * user, const char * password, const char * args)
 {
+	const char * msg;
+	if(checkPassword(fd, user, password) && userInRoom.find(user) == userInRoom.end()){
+		list<string>::iterator it = find(chatRoom.begin(), chatRoom.end(), args);
+        	if(it == chatRoom.end())
+				createRoom(fd, user, password, args);
+		userInRoom.insert(pair<string,string>(user, args));
+		msg =  "OK\r\n";
+	} else {
+		msg =  "DENIED\r\n";
+	}
+	write(fd, msg, strlen(msg));
+	return;
 }
 
 void
