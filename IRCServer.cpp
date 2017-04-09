@@ -437,6 +437,7 @@ IRCServer::getAllUsers(int fd, const char * user, const char * password,const  c
 void
 IRCServer::createRoom(int fd, const char * user, const char * password,const  char * args)
 {
+	const char * msg;
 	if(checkPassword(fd, user, password)){
 		vector<string>::iterator it;
 		for(it = chatRoom.begin(); it != chatRoom.end(); it++){
