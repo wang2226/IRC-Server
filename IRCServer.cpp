@@ -366,33 +366,50 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 void
 IRCServer::sendMessage(int fd, const char * user, const char * password, const char * args)
 {
-	const char * msg;	
-		vector <string> vec ;
-	if(checkPassword(fd, user, password) && userInRoom.find(user) != userInRoom.end()){
-		string room = userInRoom[user];
-		int size = vec.size();
+	vector<string> vec ;
 
-		if(size >= 100)
-			vec.erase(vec.begin());
+	const char * token = strtok(args, " ");
 
-		if(msgInRoom.find(room) == msgInRoom.end()){
-			msgInRoom.insert(pair <string,vector <string> > (room, vec));
+	while(token != NULL){
+		vec.push_back(string(token));
+		token = strtok(NULL, " ");
+	}
+	
+	string room = vec[0];
+	
+	string msg;
+	for(int i=1; i < vec.size(); i++){
+		msg += vec[i];
+		
+		if(i != vec.size()-1)
+			msg += " ";
+	}
+
+	vector<string> msgVector;
+
+	if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
+
+		string str = string(user) + " " + msg + "\r\n";
+
+		map<string, vector<string> >::iterator it = msgInRoom.find(room); 
+		if(it == msgInRoom.end()){
+			msgVector.push_back(str);
+			msgInRoom.insert(pair <string,vector <string> > (room, msgVector));
 		}else{
-			vec = msgInRoom[room];
+			int size = it->second.size();
+
+			if(size >= 100)
+				it->second.erase(vec.begin());
+
+			it->second.push_back(str);
 		}
 
-		string str = string(user) + " " + string(args) + "\r\n";
-
-		vec.push_back(str);
 		msg =  "OK\r\n";
 	} else {
 		msg =  "DENIED\r\n";
 	}
 	write(fd, msg, strlen(msg));
 
-	for(string n : vec) {
-		        std::cout << "aaa   " << n << '\n';
-				    }
 	return;
 }
 
