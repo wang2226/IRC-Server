@@ -448,7 +448,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		int size = it->second.size();		
 
 		for(int i = lastMsgNum+1; i < size; i++){
-			string str = string(itoa(i) + string(" ") + it->second[i];
+			string str = string(itoa(i)) + string(" ") + it->second[i];
 			msg =  str.c_str();
 			write(fd, msg, strlen(msg));
 		}	
