@@ -329,7 +329,8 @@ void
 IRCServer::enterRoom(int fd, const char * user, const char * password, const char * args)
 {
 	const char * msg;
-	if(checkPassword(fd, user, password) && userInRoom.find(user) == userInRoom.end()){
+	//if(checkPassword(fd, user, password) && userInRoom.find(user) == userInRoom.end()){
+	if(checkPassword(fd, user, password) ){
 		vector<string>::iterator it;
 		int flag = 0;
 		for(it = chatRoom.begin(); it < chatRoom.end(); it++){
@@ -338,10 +339,13 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 				break;
 			}
 		}
-        if(flag != 1)
-			createRoom(fd, user, password, args);
-		userInRoom.insert(pair<string,string>(user, args));
-		msg =  "OK\r\n";
+        if(flag != 1){
+		//	createRoom(fd, user, password, args);
+			msg = "ERROR (No room)\r\n";
+		}else{
+			userInRoom.insert(pair<string,string>(user, args));
+			msg =  "OK\r\n";
+		}
 	} else {
 		msg =  "ERROR (Wrong password)\r\n";
 	}
@@ -391,9 +395,10 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 
 	vector<string> msgVector;
 
-	//if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
 	if(!checkPassword(fd, user, password) ){
 		msg = "ERROR (Wrong password)\r\n";
+	}else if(userInRoom[user] != room){
+		msg = "ERROR (user not in room)\r\n";
 	}else{
 
 		string str = string(user) + s + message + "\r\n";
@@ -442,23 +447,30 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	int lastMsgNum = atoi(vec[0].c_str());
 	string room = vec[1];
 
-	//if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
 	if(!checkPassword(fd, user, password) ){
 		msg = "ERROR (Wrong password)\r\n";
+		write(fd, msg, strlen(msg));
+	}else if(userInRoom[user] != room){
+		msg = "ERROR (user not in room)\r\n";
 		write(fd, msg, strlen(msg));
 	}else{
 
 		map<string, vector<string> >::iterator it = msgInRoom.find(room); 
 		int size = it->second.size();		
 
-		for(int i = lastMsgNum+1; i < size; i++){
-			string str = to_string(i) + string(" ") + it->second[i];
-			msg =  str.c_str();
+		if(lastMsgNum > size){
+			msg =  "NO-NEW-MESSAGES\r\n";
 			write(fd, msg, strlen(msg));
-		}	
+		}else{
+			for(int i = lastMsgNum+1; i < size; i++){
+				string str = to_string(i) + string(" ") + it->second[i];
+				msg =  str.c_str();
+				write(fd, msg, strlen(msg));
+			}	
 
-		msg =  "\r\n";
-		write(fd, msg, strlen(msg));
+			msg =  "\r\n";
+			write(fd, msg, strlen(msg));
+		}
 	} 
 	return;
 }
