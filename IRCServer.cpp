@@ -339,7 +339,7 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 		userInRoom.erase(user);
 		msg =  "OK\r\n";
 	} else {
-		msg =  "DENIED\r\n";
+		msg =  "ERROR (No user in room)\r\n";
 	}
 	write(fd, msg, strlen(msg));
 	return;
