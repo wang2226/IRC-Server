@@ -389,7 +389,8 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 
 	vector<string> msgVector;
 
-	if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
+	//if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
+	if(checkPassword(fd, user, password) ){
 
 		string str = string(user) + s + message + "\r\n";
 
