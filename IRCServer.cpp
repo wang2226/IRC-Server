@@ -304,8 +304,6 @@ IRCServer::addUser(int fd, const char * user, const char * password, const char 
 		msg =  "DENIED\r\n";
 	}
 	write(fd, msg, strlen(msg));
-	msg = "\r\n";
-	write(fd, msg, strlen(msg));
 	return;		
 }
 
@@ -330,8 +328,6 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 		msg =  "DENIED\r\n";
 	}
 	write(fd, msg, strlen(msg));
-	msg = "\r\n";
-	write(fd, msg, strlen(msg));
 	return;
 }
 
@@ -345,8 +341,6 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 	} else {
 		msg =  "DENIED\r\n";
 	}
-	write(fd, msg, strlen(msg));
-	msg = "\r\n";
 	write(fd, msg, strlen(msg));
 	return;
 }
@@ -377,8 +371,6 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 		msg =  "DENIED\r\n";
 	}
 	write(fd, msg, strlen(msg));
-	msg = "\r\n";
-	write(fd, msg, strlen(msg));
 	return;
 }
 
@@ -401,8 +393,6 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		msg =  "DENIED\r\n";
 		write(fd, msg, strlen(msg));
 	}
-	msg = "\r\n";
-	write(fd, msg, strlen(msg));
 	return;
 }
 
@@ -466,8 +456,6 @@ IRCServer::createRoom(int fd, const char * user, const char * password,const  ch
 		msg = "DENIED\r\n";
 		write(fd, msg, strlen(msg));
 	}
-	msg = "\r\n";
-	write(fd, msg, strlen(msg));
 }
 
 void
