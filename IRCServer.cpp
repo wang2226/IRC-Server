@@ -370,7 +370,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	const char * s = " ";
 	const char * msg;	
 
-	const char * token = strtok(args, s);
+	const char * token = strtok((char *)args, s);
 
 	while(token != NULL){
 		vec.push_back(string(token));
