@@ -432,8 +432,6 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	int lastMsgNum = to_string(vec[0]);
 	string room = vec[1];
 
-	vector<string> msgVector;
-
 	if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
 
 		map<string, vector<string> >::iterator it = msgInRoom.find(room); 
