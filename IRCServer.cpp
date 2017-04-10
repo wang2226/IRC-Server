@@ -451,7 +451,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		msg = "ERROR (Wrong password)\r\n";
 		write(fd, msg, strlen(msg));
 	}else if(userInRoom[user] != room){
-		msg = "ERROR (user not in room)\r\n";
+		msg = "ERROR (User not in room)\r\n";
 		write(fd, msg, strlen(msg));
 	}else{
 
