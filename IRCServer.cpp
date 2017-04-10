@@ -368,6 +368,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 {
 	vector<string> vec ;
 	const char * s = " ";
+	const char * msg;	
 
 	const char * token = strtok(args, s);
 
@@ -378,19 +379,19 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	
 	string room = vec[0];
 	
-	string msg;
+	string message;
 	for(int i=1; i < vec.size(); i++){
-		msg += vec[i];
+		message += vec[i];
 		
 		if(i != vec.size()-1)
-			msg += s;
+			message += s;
 	}
 
 	vector<string> msgVector;
 
 	if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
 
-		string str = string(user) + s + msg + "\r\n";
+		string str = string(user) + s + message + "\r\n";
 
 		map<string, vector<string> >::iterator it = msgInRoom.find(room); 
 		if(it == msgInRoom.end()){
