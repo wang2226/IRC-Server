@@ -418,14 +418,28 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 void
 IRCServer::getMessages(int fd, const char * user, const char * password, const char * args)
 {
+	vector<string> vec ;
+	const char * s = " ";
 	const char * msg;	
-	if(checkPassword(fd, user, password) && userInRoom.find(user) != userInRoom.end()){
-		string room = userInRoom[user];
-		vector <string> vec = msgInRoom[room];
-		int size = vec.size();
+
+	const char * token = strtok((char *)args, s);
+
+	while(token != NULL){
+		vec.push_back(string(token));
+		token = strtok(NULL, s);
+	}
+	
+	int lastMsgNum = to_string(vec[0]);
+	string room = vec[1];
+
+	vector<string> msgVector;
+
+	if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
+
+		map<string, vector<string> >::iterator it = msgInRoom.find(room); 
 		
-		for(int i = 0; i < size; i++){
-			string str = to_string(i+1) + string(" ") + vec[i];
+		for(string s; it->second){
+			string str = to_string(i+1) + string(" ") + s;
 			msg =  str.c_str();
 			write(fd, msg, strlen(msg));
 		}	
