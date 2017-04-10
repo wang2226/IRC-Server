@@ -470,6 +470,9 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 	if(!checkPassword(fd, user, password)){
 		msg = "ERROR (Wrong password)\r\n";
 		write(fd, msg, strlen(msg));
+	}else if(userInRoom.find(user) == userInRoom.end()){
+		msg =  "ERROR (No user in room)\r\n";
+		write(fd, msg, strlen(msg));
 	}else{
 		map<string,string>::iterator it;
 		for(it = userInRoom.begin(); it != userInRoom.end(); it++){
