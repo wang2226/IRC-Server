@@ -384,7 +384,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		int size = vec.size();
 		
 		for(int i = 0; i < size; i++){
-			string str = string("MSGNUM") + to_string(i+1) + string(" ") + vec[i];
+			string str = to_string(i+1) + string(" ") + vec[i];
 			msg =  str.c_str();
 			write(fd, msg, strlen(msg));
 		}	
@@ -392,7 +392,10 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	} else {
 		msg =  "DENIED\r\n";
 		write(fd, msg, strlen(msg));
-	}
+	} 
+		msg =  "\r\n";
+		write(fd, msg, strlen(msg));
+	
 	return;
 }
 
