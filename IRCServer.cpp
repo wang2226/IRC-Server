@@ -430,16 +430,16 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		token = strtok(NULL, blank);
 	}
 	
-	string lastMsgNum = vec[0];
+	int lastMsgNum = atoi(vec[0].c_str());
 	string room = vec[1];
 
 	//if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
 	if(checkPassword(fd, user, password) ){
 
 		map<string, vector<string> >::iterator it = msgInRoom.find(room); 
-		int size = it->second.size();		
+		//int size = it->second.size();		
 
-		for(int i = 0; i < size; i++){
+		for(int i = 0; i <= lastMsgNum; i++){
 			string str = to_string(i+1) + string(" ") + it->second[i];
 			msg =  str.c_str();
 			write(fd, msg, strlen(msg));
