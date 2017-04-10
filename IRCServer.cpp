@@ -447,8 +447,8 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		map<string, vector<string> >::iterator it = msgInRoom.find(room); 
 		int size = it->second.size();		
 
-		for(int i = lastMsgNum; i < size; i++){
-			string str = to_string(i+1) + string(" ") + it->second[i];
+		for(int i = lastMsgNum+1; i < size; i++){
+			string str = to_string(i) + string(" ") + it->second[i];
 			msg =  str.c_str();
 			write(fd, msg, strlen(msg));
 		}	
