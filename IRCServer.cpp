@@ -407,9 +407,12 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 			if(size >= 100)
 				it->second.erase(vec.begin());
 
+			/*
 			vector<string>::iterator itv;
 			itv = it->second.begin();
 			it->second.insert(itv, str);
+			*/
+			it->second.push_back(str);
 		}
 
 		msg =  "OK\r\n";
@@ -492,12 +495,13 @@ IRCServer::getAllUsers(int fd, const char * user, const char * password,const  c
 			msg = str.c_str();
 			write(fd, msg, strlen(msg));
 		} 
+
+		msg = "\r\n";
+		write(fd, msg, strlen(msg));
 	} else {
 		msg = "ERROR (Wrong Password)\r\n";
 		write(fd, msg, strlen(msg));
 	}
-//	msg = "\r\n";
-//	write(fd, msg, strlen(msg));
 	return;
 }
 
