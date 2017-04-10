@@ -418,6 +418,9 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 	}
 	msg = "\r\n";
 	write(fd, msg, strlen(msg));
+	for(int string : vec) {
+		        cout<< "aa" << n << '\n';
+				    }
 	return;
 }
 
