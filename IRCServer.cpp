@@ -215,10 +215,28 @@ IRCServer::processRequest( int fd )
 	printf("For now, command, user, and password are hardwired.\n");
 */
 	const char * s = " ";
-	const char * command = strtok(commandLine, s);
-	const char * user = strtok(NULL, s);
-	const char * password = strtok(NULL, s);
-	const char * args = strtok(NULL, s);
+	vector<string> vec;
+	
+	const char * token = strtok(commandLine, s);
+
+	while(token != NULL){
+		vec.push_back(string(token));
+		token = strtok(NULL, s);
+	}
+	
+	const char * command = vec[0].c_str();
+	const char * user = vec[1].c_str();
+	const char * password = vec[2].c_str();
+	
+	string str;
+	for(int i=3; i < vec.size(); i++){
+		str += vec[i];
+		
+		if(i != vec.size()-1)
+			str += " ";
+	}
+
+	const char * args = str.c_str();
 
 	printf("command=%s\n", command);
 	printf("user=%s\n", user);
@@ -352,16 +370,16 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 		vector <string> vec ;
 	if(checkPassword(fd, user, password) && userInRoom.find(user) != userInRoom.end()){
 		string room = userInRoom[user];
+		int size = vec.size();
+
+		if(size >= 100)
+			vec.erase(vec.begin());
+
 		if(msgInRoom.find(room) == msgInRoom.end()){
 			msgInRoom.insert(pair <string,vector <string> > (room, vec));
 		}else{
 			vec = msgInRoom[room];
 		}
-
-		int size = vec.size();
-
-		if(size >= 100)
-			vec.erase(vec.begin());
 
 		string str = string(user) + " " + string(args) + "\r\n";
 
@@ -371,9 +389,9 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 		msg =  "DENIED\r\n";
 	}
 	write(fd, msg, strlen(msg));
-	std::cout << "aaa" << endl;
+
 	for(string n : vec) {
-		        std::cout << "aaa" << n << '\n';
+		        std::cout << "aaa   " << n << '\n';
 				    }
 	return;
 }
