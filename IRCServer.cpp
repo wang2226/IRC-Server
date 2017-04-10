@@ -349,9 +349,9 @@ void
 IRCServer::sendMessage(int fd, const char * user, const char * password, const char * args)
 {
 	const char * msg;	
+		vector <string> vec ;
 	if(checkPassword(fd, user, password) && userInRoom.find(user) != userInRoom.end()){
 		string room = userInRoom[user];
-		vector <string> vec ;
 		if(msgInRoom.find(room) == msgInRoom.end()){
 			msgInRoom.insert(pair <string,vector <string> > (room, vec));
 		}else{
