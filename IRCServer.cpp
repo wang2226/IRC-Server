@@ -443,7 +443,10 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	string room = vec[1];
 
 	//if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
-	if(checkPassword(fd, user, password) ){
+	if(!checkPassword(fd, user, password) ){
+		msg = "ERROR (Wrong password)\r\n";
+		write(fd, msg, strlen(msg));
+	}else{
 
 		map<string, vector<string> >::iterator it = msgInRoom.find(room); 
 		int size = it->second.size();		
@@ -454,9 +457,6 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			write(fd, msg, strlen(msg));
 		}	
 
-	} else {
-		msg =  "DENIED\r\n";
-		write(fd, msg, strlen(msg));
 	} 
 		msg =  "\r\n";
 		write(fd, msg, strlen(msg));
@@ -482,9 +482,9 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 				write(fd, msg, strlen(msg));
 			}
 		}
+		msg = "\r\n";
+		write(fd, msg, strlen(msg));
 	}
-	msg = "\r\n";
-	write(fd, msg, strlen(msg));
 	return;
 }
 
