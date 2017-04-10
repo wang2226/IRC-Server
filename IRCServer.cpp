@@ -419,14 +419,14 @@ void
 IRCServer::getMessages(int fd, const char * user, const char * password, const char * args)
 {
 	vector<string> vec ;
-	const char * s = " ";
+	const char * blank = " ";
 	const char * msg;	
 
-	const char * token = strtok((char *)args, s);
+	const char * token = strtok((char *)args, blank);
 
 	while(token != NULL){
 		vec.push_back(string(token));
-		token = strtok(NULL, s);
+		token = strtok(NULL, blank);
 	}
 	
 	int lastMsgNum = to_string(vec[0]);
@@ -437,8 +437,9 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
 
 		map<string, vector<string> >::iterator it = msgInRoom.find(room); 
-		
-		for(string s; it->second){
+		int size = it->second.size();		
+
+		for(int i = 0; i < size; i++){
 			string str = to_string(i+1) + string(" ") + s;
 			msg =  str.c_str();
 			write(fd, msg, strlen(msg));
