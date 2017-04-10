@@ -392,9 +392,8 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	vector<string> msgVector;
 
 	//if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
-	if(checkPassword(fd, user, password) ){
+	if(!checkPassword(fd, user, password) ){
 		msg = "ERROR (Wrong password)\r\n";
-		write(fd, msg, strlen(msg));
 	}else{
 
 		string str = string(user) + s + message + "\r\n";
@@ -419,9 +418,8 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 		}
 
 		msg =  "OK\r\n";
-	} else {
-		msg =  "DENIED\r\n";
-	}
+	} 
+
 	write(fd, msg, strlen(msg));
 
 	return;
