@@ -440,7 +440,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		int size = it->second.size();		
 
 		for(int i = 0; i < size; i++){
-			string str = to_string(i+1) + string(" ") + s;
+			string str = to_string(i+1) + string(" ") + it->second[i];
 			msg =  str.c_str();
 			write(fd, msg, strlen(msg));
 		}	
