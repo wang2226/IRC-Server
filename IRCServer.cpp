@@ -354,7 +354,7 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 {
 	const char * msg;	
 	if(!checkPassword(fd, user, password)){
-		msg = ERROR (Wrong password)\r\n";
+		msg = "ERROR (Wrong password)\r\n";
 	}else if(userInRoom.find(user) == userInRoom.end()){
 		msg =  "ERROR (No user in room)\r\n";
 	} else {
