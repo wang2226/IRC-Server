@@ -372,7 +372,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	}
 	write(fd, msg, strlen(msg));
 	for(string n : vec) {
-	        cout << n << '\n';
+	        cout<<"aaa" << n << '\n';
 			    }
 	return;
 }
