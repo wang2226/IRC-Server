@@ -393,6 +393,9 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 
 	//if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
 	if(checkPassword(fd, user, password) ){
+		msg = "ERROR (Wrong password)\r\n";
+		write(fd, msg, strlen(msg));
+	}else{
 
 		string str = string(user) + s + message + "\r\n";
 
@@ -466,7 +469,13 @@ void
 IRCServer::getUsersInRoom(int fd, const char * user, const char * password, const char * args)
 {
 	const char * msg;
-	if(checkPassword(fd, user, password) && userInRoom.find(user) != userInRoom.end()){
+	if(!checkPassword(fd, user, password)){
+		msg = "ERROR (Wrong password)\r\n";
+		write(fd, msg, strlen(msg));
+	}else if(userInRoom.find(user) != userInRoom.end()){
+		msg =  "ERROR (No user in room)\r\n";
+		write(fd, msg, strlen(msg));
+	}else{
 		map<string,string>::iterator it;
 		for(it = userInRoom.begin(); it != userInRoom.end(); it++){
 			if(!(it->second.compare(args))){
@@ -475,9 +484,6 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 				write(fd, msg, strlen(msg));
 			}
 		}
-	} else {
-		msg = "DENIED\r\n";
-		write(fd, msg, strlen(msg));
 	}
 	msg = "\r\n";
 	write(fd, msg, strlen(msg));
