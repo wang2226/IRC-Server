@@ -371,7 +371,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 		msg =  "DENIED\r\n";
 	}
 	write(fd, msg, strlen(msg));
-	std::cout << "aaa" << endl
+	std::cout << "aaa" << endl;
 	for(string n : vec) {
 		        std::cout << "aaa" << n << '\n';
 				    }
