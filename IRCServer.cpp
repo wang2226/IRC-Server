@@ -433,7 +433,8 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	string lastMsgNum = vec[0];
 	string room = vec[1];
 
-	if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
+	//if(checkPassword(fd, user, password) && room.compare(userInRoom[user])){
+	if(checkPassword(fd, user, password) ){
 
 		map<string, vector<string> >::iterator it = msgInRoom.find(room); 
 		int size = it->second.size();		
