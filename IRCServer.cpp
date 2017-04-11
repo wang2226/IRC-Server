@@ -531,7 +531,6 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 				sprintf(buffer,"%d", size);
 				msg=buffer;
 				*/
-				msg = room.c_str();
 			}
 		}
 	} 
