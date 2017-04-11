@@ -303,6 +303,10 @@ IRCServer::checkPassword(int fd, const char * user, const char * password) {
 	// Here check the password
 	bool match;
 	string str (password);
+
+	if(allUsers.find(string(user)) == allUsers.end())
+		return false;
+
 	if(!allUsers[user].compare(str))
 		match = true;
 	else
@@ -495,7 +499,8 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		token = strtok(NULL, blank);
 	}
 	
-	int lastMsgNum = atoi(vec[0].c_str());
+	//int lastMsgNum = atoi(vec[0].c_str());
+	long lastMsgNum = stoi(vec[0]);
 	string room = vec[1];
 
 	if(!checkPassword(fd, user, password) ){
