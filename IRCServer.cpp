@@ -506,6 +506,16 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			string room = string(second);
 
 			vector<string> vec = it->second;
+	char buffer[10];
+	sprintf(buffer, "%d", lastMsgNum);
+	write(fd, buffer, strlen(buffer));
+	fflush(stdout);
+	write(fd, "\r\n", strlen("\r\n"));
+	fflush(stdout);
+	write(fd, room.c_str(), strlen(room.c_str()));
+	fflush(stdout);
+	write(fd, "\r\n", strlen("\r\n"));
+	fflush(stdout);
 
 			int inRoom = 0;
 			for(int i = 0; i < vec.size(); i++){
@@ -518,16 +528,6 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			if(inRoom != 1){
 				msg = "ERROR (User not in room)\r\n";
 			}else{
-	char buffer[10];
-	sprintf(buffer, "%d", lastMsgNum);
-	write(fd, buffer, strlen(buffer));
-	fflush(stdout);
-	write(fd, "\r\n", strlen("\r\n"));
-	fflush(stdout);
-	write(fd, room.c_str(), strlen(room.c_str()));
-	fflush(stdout);
-	write(fd, "\r\n", strlen("\r\n"));
-	fflush(stdout);
 				map<string, vector<string> >::iterator itVec = msgInRoom.find(room); 
 				vector<string> vec = itVec->second;
 				int size = vec.size();		
