@@ -533,11 +533,6 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 					}	
 					msg =  "\r\n";
 				}
-				/*
-				char buffer[10];
-				sprintf(buffer,"%d", size);
-				msg=buffer;
-				*/
 			}
 		}
 	} 
@@ -552,8 +547,10 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 	const char * msg;
 	if(!checkPassword(fd, user, password)){
 		msg = "ERROR (Wrong password)\r\n";
-	}else if(userInRoom.find(user) == userInRoom.end()){
+		/*
+	}else if(userInRoom.find(string(user)) == userInRoom.end()){
 		msg =  "ERROR (No user in room)\r\n";
+		*/
 	}else{
 		map<string,vector<string> >::iterator it;
 		for(it = userInRoom.begin(); it != userInRoom.end(); it++){
