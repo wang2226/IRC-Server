@@ -529,14 +529,14 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 				msg = "ERROR (User not in room)\r\n";
 			}else{
 				map<string, vector<string> >::iterator itVec = msgInRoom.find(room); 
-				vector<string> vec = itVec->second;
-				int size = vec.size();		
+				vector<string> msgVec = itVec->second;
+				int size = msgVec.size();		
 
 				if(lastMsgNum+1 > size){
 					msg =  "NO-NEW-MESSAGES\r\n";
 				}else{
 					for(int i = lastMsgNum+1; i < size; i++){
-						string str = to_string(i) + blank + vec[i];
+						string str = to_string(i) + blank + msgVec[i];
 						msg =  str.c_str();
 						write(fd, msg, strlen(msg));
 					}	
