@@ -502,7 +502,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			char * first = strtok((char *)args, blank);
 			char * second = strtok(NULL, blank);
 
-			long int lastMsgNum = atol(first);
+			int lastMsgNum = atoi(first);
 			string room = string(second);
 
 			vector<string> vec = it->second;
