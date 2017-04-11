@@ -504,16 +504,12 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 
 			int lastMsgNum = atoi(first);
 			string room = string(second);
-	char buffer[10];
-	sprintf(buffer, "%d", lastMsgNum);
-	write(fd, buffer, strlen(buffer));
-	fflush(stdout);
-	write(fd, "\r\n", strlen("\r\n"));
-	fflush(stdout);
-	write(fd, room.c_str(), strlen(room.c_str()));
-	fflush(stdout);
-	write(fd, "\r\n", strlen("\r\n"));
-	fflush(stdout);
+
+			if(lastMsgNum > 100){
+				msg =  "NO-NEW-MESSAGES\r\n";
+				write(fd, "\r\n", strlen("\r\n"));
+				return;
+			}
 
 			vector<string> vec = it->second;
 
