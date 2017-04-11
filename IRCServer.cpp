@@ -520,11 +520,15 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			if(inRoom != 1){
 				msg = "ERROR (User not in room)\r\n";
 			}else{
-const char * buffer = "**********************************come here********************\n";
+const char * buffer = "*********************************      1     ********************\n";
 write(fd, buffer, strlen(buffer));
 				map<string, vector<string> >::iterator itVec = msgInRoom.find(room); 
 				vector<string> vec = itVec->second;
+const char * buffer = "*********************************      2     ********************\n";
+write(fd, buffer, strlen(buffer));
 				int size = vec.size();		
+const char * buffer = "*********************************      3     ********************\n";
+write(fd, buffer, strlen(buffer));
 
 				if(lastMsgNum+1 > size){
 					msg =  "NO-NEW-MESSAGES\r\n";
