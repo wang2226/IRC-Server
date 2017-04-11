@@ -397,7 +397,8 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 			if(vec.empty())
 				userInRoom.erase(string(user));
 			else
-				userInRoom.insert(pair <string,vector <string> > (string(user), vec);
+				userInRoom.insert(pair <string,vector <string> > (string(user), vec));
+
 			msg =  "OK\r\n";
 		}
 	}
