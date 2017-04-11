@@ -520,7 +520,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			if(inRoom != 1){
 				msg = "ERROR (User not in room)\r\n";
 			}else{
-const char *buffer[10];
+const char buffer[10];
 sprintf(buffer, "%d", lastMsgNum);
 write(fd, buffer, strlen(buffer));
 				map<string, vector<string> >::iterator itVec = msgInRoom.find(room); 
