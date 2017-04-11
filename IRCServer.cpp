@@ -504,8 +504,6 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 
 			int lastMsgNum = atoi(first);
 			string room = string(second);
-
-			vector<string> vec = it->second;
 	char buffer[10];
 	sprintf(buffer, "%d", lastMsgNum);
 	write(fd, buffer, strlen(buffer));
@@ -516,6 +514,8 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	fflush(stdout);
 	write(fd, "\r\n", strlen("\r\n"));
 	fflush(stdout);
+
+			vector<string> vec = it->second;
 
 			int inRoom = 0;
 			for(int i = 0; i < vec.size(); i++){
