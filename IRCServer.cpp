@@ -512,7 +512,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			if(inRoom != 1){
 				msg = "ERROR (User not in room)\r\n";
 			}else{
-				map<string, vector<string> >::iterator itVec = msgInRoom.find(string(room)); 
+				map<string, vector<string> >::iterator itVec = msgInRoom.find(room); 
 				int size = itVec->second.size();		
 
 				if(lastMsgNum+1 > size){
@@ -525,6 +525,9 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 					}	
 					msg =  "\r\n";
 				}
+				char buffer[10];
+				sprintf(buffer,"%d", size);
+				msg=buffer;
 			}
 		}
 	} 
