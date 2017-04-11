@@ -507,7 +507,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 
 			if(lastMsgNum > 100){
 				msg =  "NO-NEW-MESSAGES\r\n";
-				write(fd, "\r\n", strlen("\r\n"));
+				write(fd, msg, strlen(msg));
 				return;
 			}
 
