@@ -15,7 +15,7 @@ class IRCServer {
 	// Add any variables you need
 	vector<string> chatRoom;
 	map<string,string> allUsers;
-	map<string,string> userInRoom;
+	map<string,vector<string> > userInRoom;
 	map<string, vector<string> > msgInRoom; 
 
 private:

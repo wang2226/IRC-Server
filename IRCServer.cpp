@@ -214,14 +214,14 @@ IRCServer::processRequest( int fd )
 	printf("You need to separate the commandLine into those components\n");
 	printf("For now, command, user, and password are hardwired.\n");
 */
-	const char * s = " ";
+	const char * blank = " ";
 	vector<string> vec;
 	
-	const char * token = strtok(commandLine, s);
+	const char * token = strtok(commandLine, blank);
 
 	while(token != NULL){
 		vec.push_back(string(token));
-		token = strtok(NULL, s);
+		token = strtok(NULL, blank);
 	}
 	
 	const char * command = vec[0].c_str();
@@ -315,8 +315,9 @@ IRCServer::addUser(int fd, const char * user, const char * password, const char 
 {
 	// Here add a new user. For now always return OK.
 	const char * msg;
-	if(allUsers.find(user) == allUsers.end()){
-		allUsers.insert(pair<string,string>(user,password));
+
+	if(allUsers.find(string(user)) == allUsers.end()){
+		allUsers.insert(pair<string, string>(string(user), string(password)));
 		msg =  "OK\r\n";
 	} else {
 		msg =  "DENIED\r\n";
@@ -329,26 +330,46 @@ void
 IRCServer::enterRoom(int fd, const char * user, const char * password, const char * args)
 {
 	const char * msg;
-	//if(checkPassword(fd, user, password) && userInRoom.find(user) == userInRoom.end()){
+	string room = string(args);
+
 	if(checkPassword(fd, user, password) ){
+		msg =  "ERROR (Wrong password)\r\n";
+	}else{
 		vector<string>::iterator it;
+
 		int flag = 0;
 		for(it = chatRoom.begin(); it < chatRoom.end(); it++){
-			if(*it == args){
+			if(*it == room){
 				flag = 1;
 				break;
 			}
 		}
+
         if(flag != 1){
-		//	createRoom(fd, user, password, args);
 			msg = "ERROR (No room)\r\n";
 		}else{
-			userInRoom.insert(pair<string,string>(user, args));
-			msg =  "OK\r\n";
+			map<string, vector<string> >::iterator it = userInRoom.find(string(user)); 
+
+			if(it == userInRoom.end()){
+				vector<string> vec;
+				vec.push_back(room);
+				userInRoom.insert(pair <string,vector <string> > (string(user), vec));
+			}else{
+				int haveOne = 0;
+				for(int i = 0; i < it->second.size(); i++){
+					if(it->second[i] == room){
+						haveOne = 1;
+						break;
+					}
+				}
+
+				if(haveOne != 1)
+					it->second.push_back(room);
+			}
 		}
-	} else {
-		msg =  "ERROR (Wrong password)\r\n";
+			msg =  "OK\r\n";
 	}
+
 	write(fd, msg, strlen(msg));
 	return;
 }
@@ -357,14 +378,22 @@ void
 IRCServer::leaveRoom(int fd, const char * user, const char * password, const char * args)
 {
 	const char * msg;	
+	string room = string(args);
+
 	if(!checkPassword(fd, user, password)){
 		msg = "ERROR (Wrong password)\r\n";
-	}else if(userInRoom.find(user) == userInRoom.end()){
-		msg =  "ERROR (No user in room)\r\n";
-	} else {
-		userInRoom.erase(user);
-		msg =  "OK\r\n";
+	}else{
+		map<string, vector<string> >::iterator it = userInRoom.find(string(user)); 
+		
+		if(it == userInRoom.end()){
+			msg =  "ERROR (No user in room)\r\n";
+		}else{
+			vector<string> vec = it->second;
+			vec.erase(remove(vec.begin(), vec.end(), room), vec.end());
+			msg =  "OK\r\n";
+		}
 	}
+
 	write(fd, msg, strlen(msg));
 	return;
 }
@@ -372,15 +401,15 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 void
 IRCServer::sendMessage(int fd, const char * user, const char * password, const char * args)
 {
-	vector<string> vec ;
-	const char * s = " ";
 	const char * msg;	
+	const char * blank = " ";
+	vector<string> vec ;
 
-	const char * token = strtok((char *)args, s);
+	const char * token = strtok((char *)args, blank);
 
 	while(token != NULL){
 		vec.push_back(string(token));
-		token = strtok(NULL, s);
+		token = strtok(NULL, blank);
 	}
 	
 	string room = vec[0];
@@ -390,52 +419,63 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 		message += vec[i];
 		
 		if(i != vec.size()-1)
-			message += s;
+			message += blank;
 	}
 
 	vector<string> msgVector;
 
 	if(!checkPassword(fd, user, password) ){
 		msg = "ERROR (Wrong password)\r\n";
-	}else if(userInRoom[user] != room){
-		msg = "ERROR (user not in room)\r\n";
 	}else{
-
-		string str = string(user) + s + message + "\r\n";
-
-		map<string, vector<string> >::iterator it = msgInRoom.find(room); 
-
-		if(it == msgInRoom.end()){
-			msgVector.push_back(str);
-			msgInRoom.insert(pair <string,vector <string> > (room, msgVector));
+		map<string, vector<string> >::iterator it = userInRoom.find(string(user)); 
+		
+		if(it == userInRoom.end()){
+			msg = "ERROR (user not in room)\r\n";
 		}else{
-			int size = it->second.size();
+			vector<string> vec = it->second;
 
-			if(size >= 100)
-				it->second.erase(vec.begin());
+			int inRoom = 0;
+			for(int i = 0; i < vec.size(); i++){
+				if(vec[i] == room){
+					inRoom = 1;
+					break;
+				}
+			}
+			
+			if(inRoom != 1){
+				msg = "ERROR (user not in room)\r\n";
+			}else{
+				string str = string(user) + blank + message + "\r\n";
 
-			/*
-			vector<string>::iterator itv;
-			itv = it->second.begin();
-			it->second.insert(itv, str);
-			*/
-			it->second.push_back(str);
+				map<string, vector<string> >::iterator it = msgInRoom.find(room); 
+
+				if(it == msgInRoom.end()){
+					msgVector.push_back(str);
+					msgInRoom.insert(pair <string,vector <string> > (room, msgVector));
+				}else{
+						int size = it->second.size();
+
+						if(size >= 100)
+								it->second.erase(vec.begin());
+
+						it->second.push_back(str);
+				  }
+
+				msg =  "OK\r\n";
+			}
 		}
-
-		msg =  "OK\r\n";
 	} 
 
 	write(fd, msg, strlen(msg));
-
 	return;
 }
 
 void
 IRCServer::getMessages(int fd, const char * user, const char * password, const char * args)
 {
+	const char * msg;	
 	vector<string> vec ;
 	const char * blank = " ";
-	const char * msg;	
 
 	const char * token = strtok((char *)args, blank);
 
@@ -449,29 +489,42 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 
 	if(!checkPassword(fd, user, password) ){
 		msg = "ERROR (Wrong password)\r\n";
-		write(fd, msg, strlen(msg));
-	}else if(userInRoom[user] != room){
-		msg = "ERROR (User not in room)\r\n";
-		write(fd, msg, strlen(msg));
 	}else{
-
-		map<string, vector<string> >::iterator it = msgInRoom.find(room); 
-		int size = it->second.size();		
-
-		if(lastMsgNum > size){
-			msg =  "NO-NEW-MESSAGES\r\n";
-			write(fd, msg, strlen(msg));
+		map<string, vector<string> >::iterator it = userInRoom.find(string(user)); 
+		
+		if(it == userInRoom.end()){
+			msg = "ERROR (User not in room)\r\n";
 		}else{
-			for(int i = lastMsgNum+1; i < size; i++){
-				string str = to_string(i) + string(" ") + it->second[i];
-				msg =  str.c_str();
-				write(fd, msg, strlen(msg));
-			}	
+			vector<string> vec = it->second;
 
-			msg =  "\r\n";
-			write(fd, msg, strlen(msg));
+			int inRoom = 0;
+			for(int i = 0; i < vec.size(); i++){
+				if(vec[i] == room){
+					inRoom = 1;
+					break;
+				}
+			}
+			
+			if(inRoom != 1){
+				msg = "ERROR (User not in room)\r\n";
+			}else{
+				int size = it->second.size();		
+
+				if(lastMsgNum+1 > size){
+					msg =  "NO-NEW-MESSAGES\r\n";
+				}else{
+					for(int i = lastMsgNum+1; i < size; i++){
+						string str = to_string(i) + string(" ") + it->second[i];
+						msg =  str.c_str();
+						write(fd, msg, strlen(msg));
+					}	
+					msg =  "\r\n";
+				}
+			}
 		}
 	} 
+
+	write(fd, msg, strlen(msg));
 	return;
 }
 
@@ -481,43 +534,50 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 	const char * msg;
 	if(!checkPassword(fd, user, password)){
 		msg = "ERROR (Wrong password)\r\n";
-		write(fd, msg, strlen(msg));
 	}else if(userInRoom.find(user) == userInRoom.end()){
 		msg =  "ERROR (No user in room)\r\n";
-		write(fd, msg, strlen(msg));
 	}else{
 		map<string,string>::iterator it;
 		for(it = userInRoom.begin(); it != userInRoom.end(); it++){
-			if(!(it->second.compare(args))){
-				string str = it->first + "\r\n";	
-				msg = str.c_str();
-				write(fd, msg, strlen(msg));
+			vector vec;
+			vec = it->second;
+
+			for(int i = 0; i < vec.size(); i++){
+				if(!(vec[i].compare(string(args)))){
+					string str = it->first + "\r\n";	
+					msg = str.c_str();
+					write(fd, msg, strlen(msg));
+					break;
+				}
 			}
 		}
 		msg = "\r\n";
-		write(fd, msg, strlen(msg));
 	}
+
+	write(fd, msg, strlen(msg));
 	return;
 }
 
 void
 IRCServer::getAllUsers(int fd, const char * user, const char * password,const  char * args)
 {
-	map<string,string>::iterator it;
 	const char * msg;
-	if(checkPassword(fd, user, password)){
-		for(it = allUsers.begin(); it != allUsers.end(); it++){
+
+	if(!checkPassword(fd, user, password)){
+		msg = "ERROR (Wrong password)\r\n";
+	}else{
+		map<string,string>::iterator it;
+
+		for(it = allUsers.begin(); it > allUsers.end(); it++){
 			string str = it->first + "\r\n";
 			msg = str.c_str();
 			write(fd, msg, strlen(msg));
 		} 
 
 		msg = "\r\n";
-		write(fd, msg, strlen(msg));
-	} else {
-		msg = "ERROR (Wrong password)\r\n";
-		write(fd, msg, strlen(msg));
 	}
+
+	write(fd, msg, strlen(msg));
 	return;
 }
 
@@ -525,20 +585,22 @@ void
 IRCServer::createRoom(int fd, const char * user, const char * password,const  char * args)
 {
 	const char * msg;
-	if(checkPassword(fd, user, password)){
+	if(!checkPassword(fd, user, password)){
+		msg = "DENIED\r\n";
+	}else{
 		vector<string>::iterator it;
 		for(it = chatRoom.begin(); it != chatRoom.end(); it++){
-			if(*it == args){
+			if(*it == string(args)){
+				msg = "OK\r\n";
+				write(fd, msg, strlen(msg));
 				return;
 			}
 		}
-		chatRoom.push_back(args);
+		chatRoom.push_back(string(args));
 		msg = "OK\r\n";
-		write(fd, msg, strlen(msg));
-	} else {
-		msg = "DENIED\r\n";
-		write(fd, msg, strlen(msg));
-	}
+	} 
+	write(fd, msg, strlen(msg));
+	return;
 }
 
 void
