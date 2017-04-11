@@ -499,8 +499,8 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		token = strtok(NULL, blank);
 	}
 	
-	//int lastMsgNum = atoi(vec[0].c_str());
-	unsigned long lastMsgNum = stoul (vec[0],nullptr,0);
+	int lastMsgNum = atoi(vec[0].c_str());
+//	unsigned long lastMsgNum = stoul (vec[0],nullptr,0);
 	string room = vec[1];
 
 	if(!checkPassword(fd, user, password) ){
@@ -552,10 +552,6 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 	const char * msg;
 	if(!checkPassword(fd, user, password)){
 		msg = "ERROR (Wrong password)\r\n";
-		/*
-	}else if(userInRoom.find(string(user)) == userInRoom.end()){
-		msg =  "ERROR (No user in room)\r\n";
-		*/
 	}else{
 		map<string,vector<string> >::iterator it;
 		for(it = userInRoom.begin(); it != userInRoom.end(); it++){
