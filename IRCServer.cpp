@@ -520,7 +520,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			}else{
 	char buffer[10];
 	sprintf(buffer, "%d", lastMsgNum);
-	write(fd, buffer, strlen(buffer);
+	write(fd, buffer, strlen(buffer));
 	fflush(stdout);
 	write(fd, "\r\n", strlen("\r\n"));
 	fflush(stdout);
