@@ -4,6 +4,7 @@
 #include <list>
 #include <string>
 #include <fstream>
+#include <algorithm>
 
 #ifndef IRC_SERVER
 #define IRC_SERVER
