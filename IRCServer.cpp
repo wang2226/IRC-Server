@@ -338,7 +338,7 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 		vector<string>::iterator it;
 
 		int flag = 0;
-		for(it = chatRoom.begin(); it < chatRoom.end(); it++){
+		for(it = chatRoom.begin(); it != chatRoom.end(); it++){
 			if(*it == room){
 				flag = 1;
 				break;
@@ -369,8 +369,8 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 	//				userInRoom.insert(pair <string,vector <string> > (string(user), it->second));
 				}
 			}
-		}
 			msg =  "OK\r\n";
+		}
 	}
 
 	write(fd, msg, strlen(msg));
