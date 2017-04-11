@@ -537,7 +537,7 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 	}else if(userInRoom.find(user) == userInRoom.end()){
 		msg =  "ERROR (No user in room)\r\n";
 	}else{
-		map<string,string>::iterator it;
+		map<string,vector<string> >::iterator it;
 		for(it = userInRoom.begin(); it != userInRoom.end(); it++){
 			vector <string> vec;
 			vec = it->second;
