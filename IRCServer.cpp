@@ -499,8 +499,6 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	int lastMsgNum = stoi(vec[0]);
 	string room = vec[1];
 
-const char * buffer = "**********************************come here********************\n";
-write(fd, buffer, strlen(buffer));
 	if(!checkPassword(fd, user, password) ){
 		msg = "ERROR (Wrong password)\r\n";
 	}else{
@@ -525,6 +523,8 @@ write(fd, buffer, strlen(buffer));
 				map<string, vector<string> >::iterator itVec = msgInRoom.find(room); 
 				vector<string> vec = itVec->second;
 				int size = vec.size();		
+const char * buffer = "**********************************come here********************\n";
+write(fd, buffer, strlen(buffer));
 
 				if(lastMsgNum+1 > size){
 					msg =  "NO-NEW-MESSAGES\r\n";
