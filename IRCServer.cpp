@@ -455,7 +455,6 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 				if(it == msgInRoom.end()){
 					msgVector.push_back(str);
 					msgInRoom.insert(pair <string,vector <string> > (room, msgVector));
-					msg =  "OK\r\n";
 				}else{
 						msgVector = it->second;
 						int size = msgVector.size();
@@ -464,14 +463,9 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 								msgVector.erase(msgVector.begin());
 
 						msgVector.push_back(str);
-				//		msg =  "OK\r\n";
-						size = msgVector.size();
-				char buffer[10];
-				sprintf(buffer,"%d", size);
-				msg=buffer;
 				  }
 
-			//	msg =  "OK\r\n";
+				msg =  "OK\r\n";
 			}
 		}
 	} 
@@ -518,13 +512,14 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			if(inRoom != 1){
 				msg = "ERROR (User not in room)\r\n";
 			}else{
-				int size = it->second.size();		
+				map<string, vector<string> >::iterator itVec = msgInRoom.find(string(room)); 
+				int size = itVec->second.size();		
 
 				if(lastMsgNum+1 > size){
 					msg =  "NO-NEW-MESSAGES\r\n";
 				}else{
 					for(int i = lastMsgNum+1; i < size; i++){
-						string str = to_string(i) + string(" ") + it->second[i];
+						string str = to_string(i) + string(" ") + itVec->second[i];
 						msg =  str.c_str();
 						write(fd, msg, strlen(msg));
 					}	
