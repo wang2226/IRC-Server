@@ -499,10 +499,12 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		if(it == userInRoom.end()){
 			msg = "ERROR (User not in room)\r\n";
 		}else{
-			const char * first = strtok((char *)args, blank);
-			const char * second = strtok(NULL, blank);
+			char * first = strtok((char *)args, blank);
+			char * second = strtok(NULL, blank);
 
-			int lastMsgNum = atoi(first);
+	write(fd, first, strlen(first));
+	write(fd, second, strlen(second));
+			long int lastMsgNum = atol(first);
 			string room = string(second);
 
 			vector<string> vec = it->second;

@@ -7,4 +7,4 @@
 ./test-server7.sh ./IRCServer 2345   : 5   of 5  
 ./test-server8.sh ./IRCServer 2345   : 5   of 5  
 ./test-server9.sh ./IRCServer 2345   : 5   of 5  
-./test-server10.sh ./IRCServer 2345   : 5   of 5  
+./test-server10.sh ./IRCServer 2345   : 0   of 5  
