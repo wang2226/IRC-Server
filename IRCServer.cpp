@@ -519,16 +519,18 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 				if(lastMsgNum+1 > size){
 					msg =  "NO-NEW-MESSAGES\r\n";
 				}else{
-					for(int i = lastMsgNum+1; i < size; i++){
+					for(int i = lastMsgNum; i < size; i++){
 						string str = to_string(i) + blank + vec[i];
 						msg =  str.c_str();
 						write(fd, msg, strlen(msg));
 					}	
 					msg =  "\r\n";
 				}
+				/*
 				char buffer[10];
 				sprintf(buffer,"%d", size);
 				msg=buffer;
+				*/
 			}
 		}
 	} 
