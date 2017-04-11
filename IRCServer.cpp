@@ -389,7 +389,7 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 			msg =  "ERROR (No user in room)\r\n";
 		}else{
 			vector<string> vec = it->second;
-			vec.erase(std::remove(vec.begin(), vec.end(), room), vec.end());
+			vec.erase(remove(vec.begin(), vec.end(), args), vec.end());
 			msg =  "OK\r\n";
 		}
 	}
