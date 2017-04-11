@@ -505,12 +505,6 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			int lastMsgNum = atoi(first);
 			string room = string(second);
 
-			if(lastMsgNum > 100){
-				msg =  "NO-NEW-MESSAGES\r\n";
-				write(fd, msg, strlen(msg));
-				return;
-			}
-
 			vector<string> vec = it->second;
 
 			int inRoom = 0;
@@ -525,6 +519,12 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 				msg = "ERROR (User not in room)\r\n";
 			}else{
 				map<string, vector<string> >::iterator itVec = msgInRoom.find(room); 
+				if(itVec == msgInRoom.end()){
+					msg =  "NO-NEW-MESSAGES\r\n";
+					write(fd, msg, strlen(msg));
+					return;
+				}
+
 				vector<string> msgVec = itVec->second;
 				int size = msgVec.size();		
 
