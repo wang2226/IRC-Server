@@ -518,7 +518,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			if(inRoom != 1){
 				msg = "ERROR (User not in room)\r\n";
 			}else{
-	write(fd, to_string(lastMsgNum), strlen(to_string(lastMsgNum)));
+	write(fd, to_string(lastMsgNum), strlen((const char *)to_string(lastMsgNum)));
 	write(fd, "\r\n", strlen("\r\n"));
 	write(fd, room.c_str(), strlen(room.c_str()));
 	write(fd, "\r\n", strlen("\r\n"));
