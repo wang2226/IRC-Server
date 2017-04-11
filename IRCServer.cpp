@@ -463,11 +463,12 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 						if(size >= 100)
 								msgVector.erase(msgVector.begin());
 
+						msgVector.push_back(str);
+				//		msg =  "OK\r\n";
+						size = msgVextor.size();
 				char buffer[10];
 				sprintf(buffer,"%d", size);
 				msg=buffer;
-						msgVector.push_back(str);
-				//		msg =  "OK\r\n";
 				  }
 
 			//	msg =  "OK\r\n";
