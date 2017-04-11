@@ -487,6 +487,8 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	const char * msg;	
 	vector<string> vec ;
 	const char * blank = " ";
+const char * buffer = "**********************************come here********************\n";
+write(fd, buffer, strlen(buffer));
 
 	const char * token = strtok((char *)args, blank);
 
@@ -499,8 +501,6 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	int lastMsgNum = stoi(vec[0]);
 	string room = vec[1];
 
-const char * buffer = "come here\n";
-write(fd, buffer, strlen(buffer));
 	if(!checkPassword(fd, user, password) ){
 		msg = "ERROR (Wrong password)\r\n";
 	}else{
