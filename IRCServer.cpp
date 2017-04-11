@@ -332,7 +332,7 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 	const char * msg;
 	string room = string(args);
 
-	if(checkPassword(fd, user, password) ){
+	if(!checkPassword(fd, user, password) ){
 		msg =  "ERROR (Wrong password)\r\n";
 	}else{
 		vector<string>::iterator it;
