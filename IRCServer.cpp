@@ -363,8 +363,11 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 					}
 				}
 
-				if(haveOne != 1)
+				if(haveOne != 1){
 					it->second.push_back(room);
+					userInRoom.erase(string(user));
+					userInRoom.insert(pair <string,vector <string> > (string(user), it->second));
+				}
 			}
 		}
 			msg =  "OK\r\n";
@@ -393,6 +396,8 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 
 			if(vec.empty())
 				userInRoom.erase(string(user));
+			else
+				userInRoom.insert(pair <string,vector <string> > (string(user), vec);
 			msg =  "OK\r\n";
 		}
 	}
@@ -454,7 +459,6 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 
 				if(it == msgInRoom.end()){
 					msgVector.push_back(str);
-					msgInRoom.insert(pair <string,vector <string> > (room, msgVector));
 				}else{
 						msgVector = it->second;
 						int size = msgVector.size();
@@ -464,10 +468,9 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 
 						msgVector.push_back(str);
 						msgInRoom.erase(room);
-						msgInRoom.insert(pair <string,vector <string> > (room, msgVector));
-						
 				  }
 
+				msgInRoom.insert(pair <string,vector <string> > (room, msgVector));
 				msg =  "OK\r\n";
 			}
 		}
