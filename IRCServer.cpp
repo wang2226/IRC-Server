@@ -455,16 +455,20 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 				if(it == msgInRoom.end()){
 					msgVector.push_back(str);
 					msgInRoom.insert(pair <string,vector <string> > (room, msgVector));
+					msg =  "OK\r\n";
 				}else{
-						int size = it->second.size();
+						vector<string> vec;
+						vec = it->second;
+						int size = vec.size();
 
 						if(size >= 100)
-								it->second.erase(vec.begin());
+								vec.erase(vec.begin());
 
-						it->second.push_back(str);
+						vec.push_back(str);
+						msg =  "OK\r\n";
 				  }
 
-				msg =  "OK\r\n";
+			//	msg =  "OK\r\n";
 			}
 		}
 	} 
@@ -523,9 +527,11 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 					}	
 					msg =  "\r\n";
 				}
+				/*
 				char buffer[10];
 				sprintf(buffer,"%d", size);
 				msg=buffer;
+				*/
 			}
 		}
 	} 
