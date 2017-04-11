@@ -499,7 +499,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		token = strtok(NULL, blank);
 	}
 	
-	long lastMsgNum = atol(paraVec[0].c_str());
+	int lastMsgNum = atoi(paraVec[0].c_str());
 //	unsigned long lastMsgNum = stoul (vec[0],nullptr,0);
 	string room = paraVec[1];
 
