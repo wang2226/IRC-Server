@@ -495,12 +495,12 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		token = strtok(NULL, blank);
 	}
 	
-const char * buffer = "**********************************come here********************\n";
-write(fd, buffer, strlen(buffer));
 	//int lastMsgNum = atoi(vec[0].c_str());
 	int lastMsgNum = stoi(vec[0]);
 	string room = vec[1];
 
+const char * buffer = "**********************************come here********************\n";
+write(fd, buffer, strlen(buffer));
 	if(!checkPassword(fd, user, password) ){
 		msg = "ERROR (Wrong password)\r\n";
 	}else{
