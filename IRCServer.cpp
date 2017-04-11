@@ -526,11 +526,9 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 					}	
 					msg =  "\r\n";
 				}
-				/*
 				char buffer[10];
 				sprintf(buffer,"%d", size);
 				msg=buffer;
-				*/
 			}
 		}
 	} 
