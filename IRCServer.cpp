@@ -523,9 +523,9 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 const char * buffer = "*********************************      1     ********************\n";
 write(fd, buffer, strlen(buffer));
 				map<string, vector<string> >::iterator itVec = msgInRoom.find(room); 
-				vector<string> vec = itVec->second;
 buffer = "*********************************      2     ********************\n";
 write(fd, buffer, strlen(buffer));
+				vector<string> vec = itVec->second;
 				int size = vec.size();		
 buffer = "*********************************      3     ********************\n";
 write(fd, buffer, strlen(buffer));
