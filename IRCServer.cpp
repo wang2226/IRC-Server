@@ -502,12 +502,6 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	int lastMsgNum = atoi(paraVec[0].c_str());
 	string room = paraVec[1];
 */
-	const char * first = strtok((char *)args, blank);
-	const char * second = strtok(NULL, blank);
-
-	int lastMsgNum = atoi(first);
-	string room = string(second);
-
 	if(!checkPassword(fd, user, password) ){
 		msg = "ERROR (Wrong password)\r\n";
 	}else{
@@ -516,6 +510,12 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		if(it == userInRoom.end()){
 			msg = "ERROR (User not in room)\r\n";
 		}else{
+	const char * first = strtok((char *)args, blank);
+	const char * second = strtok(NULL, blank);
+
+	int lastMsgNum = atoi(first);
+	string room = string(second);
+
 			vector<string> vec = it->second;
 
 			int inRoom = 0;
