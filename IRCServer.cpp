@@ -499,7 +499,8 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 		token = strtok(NULL, blank);
 	}
 	
-	int lastMsgNum = atoi(vec[0].c_str());
+	//int lastMsgNum = atoi(vec[0].c_str());
+	unsigned long lastMsgNum = stoul (vec[0],nullptr,0);
 	string room = vec[1];
 
 	if(!checkPassword(fd, user, password) ){
