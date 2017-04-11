@@ -463,12 +463,9 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 								msgVector.erase(msgVector.begin());
 
 						msgVector.push_back(str);
+						msgInRoom.erase(room);
+						msgInRoom.insert(pair <string,vector <string> > (room, msgVector));
 						
-					for(int i = 0; i < msgVector.size(); i++){
-						string str = to_string(i) + blank + msgVector[i];
-						msg =  str.c_str();
-						write(fd, msg, strlen(msg));
-					}	
 				  }
 
 				msg =  "OK\r\n";
