@@ -532,8 +532,9 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 					msg =  "NO-NEW-MESSAGES\r\n";
 				}else{
 					for(int i = lastMsgNum+1; i < size; i++){
-						string str = to_string(i) + blank + msgVec[i];
-						msg =  str.c_str();
+						char buffer[1024];
+						sprintf(buffer,"%d%s%s", i, blank, msgVec[i].c_str());
+						msg =  buffer;
 						write(fd, msg, strlen(msg));
 					}	
 					msg =  "\r\n";
