@@ -499,6 +499,8 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	int lastMsgNum = stoi(vec[0]);
 	string room = vec[1];
 
+const char * buffer = "come here\n"
+write(fd, buffer, strlen(msg));
 	if(!checkPassword(fd, user, password) ){
 		msg = "ERROR (Wrong password)\r\n";
 	}else{
