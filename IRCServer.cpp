@@ -502,11 +502,6 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			char * first = strtok((char *)args, blank);
 			char * second = strtok(NULL, blank);
 
-	write(fd, first, strlen(first));
-	write(fd, "\r\n", strlen("\r\n"));
-	write(fd, second, strlen(second));
-	write(fd, "\r\n", strlen("\r\n"));
-	fflush(stdout);
 			long int lastMsgNum = atol(first);
 			string room = string(second);
 
@@ -523,6 +518,11 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			if(inRoom != 1){
 				msg = "ERROR (User not in room)\r\n";
 			}else{
+	write(fd, itoa(lastMsgNum), strlen(itoa(lastMsgNum)));
+	write(fd, "\r\n", strlen("\r\n"));
+	write(fd, room.c_str(), strlen(room.c_str()));
+	write(fd, "\r\n", strlen("\r\n"));
+	fflush(stdout);
 				map<string, vector<string> >::iterator itVec = msgInRoom.find(room); 
 				vector<string> vec = itVec->second;
 				int size = vec.size();		
