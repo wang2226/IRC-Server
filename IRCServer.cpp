@@ -503,7 +503,9 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			char * second = strtok(NULL, blank);
 
 	write(fd, first, strlen(first));
+	write(fd, "\r\n", strlen("\r\n"));
 	write(fd, second, strlen(second));
+	write(fd, "\r\n", strlen("\r\n"));
 			long int lastMsgNum = atol(first);
 			string room = string(second);
 
