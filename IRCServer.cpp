@@ -365,8 +365,8 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 
 				if(haveOne != 1){
 					it->second.push_back(room);
-					userInRoom.erase(string(user));
-					userInRoom.insert(pair <string,vector <string> > (string(user), it->second));
+	//				userInRoom.erase(string(user));
+	//				userInRoom.insert(pair <string,vector <string> > (string(user), it->second));
 				}
 			}
 		}
