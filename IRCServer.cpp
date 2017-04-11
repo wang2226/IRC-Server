@@ -465,7 +465,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 
 						msgVector.push_back(str);
 				//		msg =  "OK\r\n";
-						size = msgVextor.size();
+						size = msgVector.size();
 				char buffer[10];
 				sprintf(buffer,"%d", size);
 				msg=buffer;
