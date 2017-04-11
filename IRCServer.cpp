@@ -523,6 +523,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 					}	
 					msg =  "\r\n";
 				}
+				msg="aa\r\n"
 			}
 		}
 	} 
