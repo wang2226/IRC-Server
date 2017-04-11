@@ -539,7 +539,7 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 	}else{
 		map<string,string>::iterator it;
 		for(it = userInRoom.begin(); it != userInRoom.end(); it++){
-			vector vec;
+			vector <string> vec;
 			vec = it->second;
 
 			for(int i = 0; i < vec.size(); i++){
@@ -568,7 +568,7 @@ IRCServer::getAllUsers(int fd, const char * user, const char * password,const  c
 	}else{
 		map<string,string>::iterator it;
 
-		for(it = allUsers.begin(); it > allUsers.end(); it++){
+		for(it = allUsers.begin(); it != allUsers.end(); it++){
 			string str = it->first + "\r\n";
 			msg = str.c_str();
 			write(fd, msg, strlen(msg));
