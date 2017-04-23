@@ -252,7 +252,7 @@ IRCServer::processRequest( int fd )
 	else if (!strcmp(command, "CREATE-ROOM")) {
 		createRoom(fd, user, password, args);
 	}
-	else if (!strcmp(command, "LIST-ROOM")) {
+	else if (!strcmp(command, "LIST-ROOMS")) {
 		listRooms(fd, user, password, args);
 	}
 	else if (!strcmp(command, "LEAVE-ROOM")) {
