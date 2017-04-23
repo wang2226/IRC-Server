@@ -623,6 +623,26 @@ IRCServer::createRoom(int fd, const char * user, const char * password,const  ch
 void
 IRCServer::listRooms(int fd, const char * user, const char * password,const  char * args)
 {
+	const char * msg;
+	char buffer[128];
+
+	if(!checkPassword(fd, user, password)){
+		msg = "DENIED\r\n";
+		write(fd, msg, strlen(msg));
+		return;
+	}
+
+	vector<string>::iterator it;
+	for(it = chatRoom.begin(); it != chatRoom.end(); it++){
+		sprintf(buffer,"%s\r\n",(*it).c_str());
+		msg = buffer;
+		write(fd, msg, strlen(msg));
+	}
+
+	msg = "\r\n";
+
+	write(fd, msg, strlen(msg));
+	return;
 
 }
 
