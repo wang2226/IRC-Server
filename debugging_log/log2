@@ -1,0 +1,12 @@
+Mon Apr 10 04:38:03 EDT 2017
++break processRequest
+Function "processRequest" not defined.
+Breakpoint 1 (processRequest) pending.
++run 2039
+Starting program: /home/u89/wang2226/cs240/lab10-src/IRCServer 2039
+
+Program received signal SIGINT, Interrupt.
+0x00007ffff7305a60 in __accept_nocancel () from /lib64/libc.so.6
++print alllUsers
+No symbol "alllUsers" in current context.
++quit

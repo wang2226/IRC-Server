@@ -1,0 +1,22 @@
+Mon Apr 10 04:29:52 EDT 2017
++break processRequest
+Function "processRequest" not defined.
+Breakpoint 1 (processRequest) pending.
++run 2038
+Starting program: /home/u89/wang2226/cs240/lab10-src/IRCServer 2038
+
+Program received signal SIGINT, Interrupt.
+0x00007ffff7305a60 in __accept_nocancel () from /lib64/libc.so.6
++run 2038
+Starting program: /home/u89/wang2226/cs240/lab10-src/IRCServer 2038
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00007ffff7b8e8e0 in std::string::c_str() const ()
+   from /usr/lib/gcc/x86_64-pc-linux-gnu/4.9.3/libstdc++.so.6
++list break
+Function "break" not defined.
++telnet localhost 2038
+Undefined command: "telnet".  Try "help".
++p
+The history is empty.
++quit
